@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 // import axios from "axios";
 
-const sendEmail = async (email) => {
+const sendEmail = async (email, subject, body) => {
   try {
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -19,12 +19,13 @@ const sendEmail = async (email) => {
 
     // Email Content with Image Attachment
     const mailOptions = {
-      from: "gogoipranjal2022@gmail.com",
+      from: process.env.SENDER_EMAIL,
       to: email,
       // cc: ["pranjalgogoi1209@gmail.com"],
       //   bcc: ["gogoipranjal2022@gmail.com"],
-      subject: "Test Email",
-      text: "Hello, this is a test email.",
+      subject,
+      html: body,
+      // text: body,
       /* attachments: [
         {
           filename: "image.png",

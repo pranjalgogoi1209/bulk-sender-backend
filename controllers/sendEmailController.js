@@ -1,5 +1,6 @@
 import { readEmailsFromExcel } from "../services/excelService.js";
 import sendEmail from "../services/sendEmail.js";
+import { emailTemplates } from "../data/emailTemplates";
 
 class SendEmailController {
   async sendEmail(req, res) {
@@ -11,7 +12,6 @@ class SendEmailController {
         });
       }
 
-      // Parse emails
       const emails = readEmailsFromExcel(filePath);
       console.log("emails from excel", emails);
 
@@ -21,14 +21,18 @@ class SendEmailController {
           .json({ error: "No emails found in the Excel file." });
       }
 
-      // Send messages one-by-one with delay
-      for (const email of emails) {
+      for (let i = 0; i < emails.length; i++) {
+        const email = emails[i];
+        const templateIndex = i % emailTemplates.length;
+        const { subject, body } = emailTemplates[templateIndex];
+
         try {
-          await sendEmail(email);
+          await sendEmail(email, subject, body);
           console.log(`✅ Email sent to ${email}`);
         } catch (err) {
           console.error(`❌ Failed to send to ${email}: ${err.message}`);
         }
+
         await new Promise((r) => setTimeout(r, 2000));
       }
 
