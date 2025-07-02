@@ -1,6 +1,6 @@
 import { readEmailsFromExcel } from "../services/excelService.js";
 import sendEmail from "../services/sendEmail.js";
-import { emailTemplates } from "../data/emailTemplates";
+import { emailTemplates } from "../data/emailTemplates.js";
 
 class SendEmailController {
   async sendEmail(req, res) {
